@@ -3,6 +3,8 @@ SampleApp::Application.routes.draw do
 
   get "static_pages/help"
 
+  get "static_pages/about"
+
   get "pages/home"
 
   get "pages/contact"
