@@ -13,6 +13,10 @@ module SessionsHelper
     @current_user ||= User.find_by_remember_token(cookies[:remember_token])
   end
   
+  def current_user?(user)
+    current_user ==  user
+  end
+  
   def signed_in?
     !current_user.nil?
   end
@@ -21,5 +25,19 @@ module SessionsHelper
     cookies[:remember_token] = nil
     current_user = nil
   end
+  
+  def store_redirect 
+    session[:redirectPath] = request.fullpath
+  end
+  
+  def clear_redirect
+    session.delete :redirectPath
+  end
+  
+  def redirect_helper (default)
+    redirect_to (session[:redirectPath] || default)
+    clear_redirect
+  end
+  
   
 end
