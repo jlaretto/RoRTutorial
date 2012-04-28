@@ -35,5 +35,25 @@ describe Micropost do
       before { @micropost.content = "a" * 141 }
       it { should_not be_valid }
     end
+    
+  describe "from users followed by" do
+  
+    let(:main_user) {FactoryGirl.create(:user)}
+    let(:second_user) {FactoryGirl.create(:user)}
+    let(:third_user) {FactoryGirl.create(:user)}
+    
+    before {main_user.follow!(third_user)}
+    
+    let(:user_post) { main_user.microposts.create!(content: "My post")}
+    let(:second_post) { second_user.microposts.create!(content: "SEcond guy post")}
+    let(:third_post) { third_user.microposts.create!(content: "Third guy post")}
+    
+    subject { Micropost.from_users_followed_by(main_user) }
+    
+    it{ should include(user_post)}
+    it{ should_not include(second_post)}
+    it{ should include(third_post)}
+    
+  end
 
 end
